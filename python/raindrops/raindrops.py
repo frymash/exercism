@@ -7,7 +7,4 @@ def convert(number):
         if number % divisor == 0:
             raindrops += sound
 
-    if raindrops == '':
-        return str(number)
-    else:
-        return raindrops
+    return raindrops if raindrops else str(number) # ternary if statement
