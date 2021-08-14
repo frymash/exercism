@@ -1,41 +1,17 @@
-import re
-
 class Matrix:
-    def __init__(self, matrix_string):
+    def __init__(self, matrix_string:str):
         self.matrix_string = matrix_string
-        self.rows = []
+        # next step converts matrix into a nested list of matrix rows (as integers)
+        # e.g. self.matrix_string = '1 2 3\n4 5 6\n7 8 9' 
+        # --> self.matrix_string.splitlines() = ['1 2 3', '4 5 6', '7 8 9']
+        # --> self.rows = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        self.rows = [[int(i) for i in row.split()] for row in self.matrix_string.splitlines()]
         self.columns = []
 
-        # split the matrix str into rows (in str). py3 interprets str literals as unicode strs --> search criteria must be a raw string
-        strRows = re.findall(r'[\r\n]?\d.+', self.matrix_string)
+    def row(self, rowNum:int):
+        return self.rows[rowNum-1]
 
-        for strRow in strRows:
-            rowList = strRow.split() # row elements are split up e.g. ['\n4 5 6'] --> ['4','5','6']
-            rowInt = [int(i) for i in rowList] # matrix row as list of integers e.g. ['4','5','6'] --> [4, 5, 6]
-            self.rows.append(rowInt) # add rowInt list into row list
-
-    def row(self, index:int):
-        return self.rows[index-1] # return row number. indexes start from 0 but rows start from 1, thus index 0 = row 1
-
-    def column(self, index:int):
-        for i in range(len(self.rows)):
-            sub_ls = []
-            for row in self.rows:
-                sub_ls.append(row[i])
-            self.columns.append(sub_ls)
-        # print(self.columns)
-        return self.columns[index-1]
-
-    def test(self):
-        print(self.rows)
-        self.column(1)
-       
-
-'''
-# testing
-
-matrix = Matrix("1 2 3\n4 5 6\n7 8 9")
-
-matrix.test()
-'''
-
+    def column(self, colNum:int):
+        for row in self.rows:
+            self.columns.append(row[colNum-1])
+        return self.columns
